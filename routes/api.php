@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserFavoriteController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
@@ -32,7 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('posts/{post}/favorite', [PostFavoriteController::class, 'store'])->name('posts.favorites.store');
     Route::delete('posts/{post}/favorite', [PostFavoriteController::class, 'destroy'])->name('posts.favorites.destroy');
     Route::post('users/{user}/favorite', [UserFavoriteController::class, 'store'])->name('users.favorites.store');
-    Route::delete('users/{user}/favorite', [UserFavoriteController::class, 'store'])->name('users.favorites.store');
+    Route::delete('users/{user}/favorite', [UserFavoriteController::class, 'destroy'])->name('users.favorites.destroy');
 
 
 });

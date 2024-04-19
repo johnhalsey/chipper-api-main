@@ -62,13 +62,65 @@ class FavoriteTest extends TestCase
         ]);
     }
 
-    public function test_a_user_can_not_remove_a_non_favorited_item()
+    public function test_a_user_can_not_remove_a_non_favorited_post()
     {
         $user = User::factory()->create();
         $post = Post::factory()->create();
 
         $this->actingAs($user)
             ->deleteJson(route('posts.favorites.destroy', ['post' => $post]))
+            ->assertNotFound();
+    }
+
+    public function test_a_user_can_favorite_a_user()
+    {
+        $user = User::factory()->create();
+        $user2 = User::factory()->create();
+
+        $this->actingAs($user)
+            ->postJson(route('users.favorites.store', ['user' => $user2]))
+            ->assertCreated();
+
+        $this->assertDatabaseHas('favorites', [
+            'user_id'          => $user->id,
+            'favoriteable_id'   => $user2->id,
+            'favoriteable_type' => User::class,
+        ]);
+    }
+
+    public function test_a_user_can_remove_a_user_from_his_favorites()
+    {
+        $user = User::factory()->create();
+        $user2 = User::factory()->create();
+
+        $this->actingAs($user)
+            ->postJson(route('users.favorites.store', ['user' => $user2]))
+            ->assertCreated();
+
+        $this->assertDatabaseHas('favorites', [
+            'favoriteable_id'   => $user2->id,
+            'favoriteable_type' => User::class,
+            'user_id'          => $user->id,
+        ]);
+
+        $this->actingAs($user)
+            ->deleteJson(route('users.favorites.destroy', ['user' => $user2]))
+            ->assertNoContent();
+
+        $this->assertDatabaseMissing('favorites', [
+            'favoriteable_id'   => $user2->id,
+            'favoriteable_type' => User::class,
+            'user_id'          => $user->id,
+        ]);
+    }
+
+    public function test_a_user_can_not_remove_a_non_favorited_user()
+    {
+        $user = User::factory()->create();
+        $user2 = User::factory()->create();
+
+        $this->actingAs($user)
+            ->deleteJson(route('users.favorites.destroy', ['user' => $user2]))
             ->assertNotFound();
     }
 }
