@@ -29,6 +29,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('session', SessionController::class)->name('session');
     Route::post('logout', LogoutController::class)->name('logout');
     Route::apiResource('posts', PostController::class, ['except' => ['index']]);
+
     Route::get('favorites', [FavoriteController::class, 'index'])->name('favorites.index');
     Route::post('posts/{post}/favorite', [PostFavoriteController::class, 'store'])->name('posts.favorites.store');
     Route::delete('posts/{post}/favorite', [PostFavoriteController::class, 'destroy'])->name('posts.favorites.destroy');
