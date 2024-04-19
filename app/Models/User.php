@@ -13,6 +13,7 @@ class User extends Authenticatable
     use HasApiTokens;
     use HasFactory;
     use Notifiable;
+    use CanBeFavorite;
 
     /**
      * The attributes that are mass assignable.
@@ -45,13 +46,14 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
+
     public function favorites(): HasMany
     {
         return $this->hasMany(Favorite::class);
     }
 
-    public function posts(): HasMany
-    {
-        return $this->hasMany(Post::class);
-    }
 }

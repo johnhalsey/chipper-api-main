@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory, CanBeFavorite;
 
     protected $fillable = ['title', 'body', 'user_id'];
 
