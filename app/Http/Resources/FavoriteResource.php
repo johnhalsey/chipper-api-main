@@ -9,6 +9,9 @@ class FavoriteResource extends ResourceCollection
 {
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'posts' => PostResource::collection($this->resource['posts']),
+            'users' => UserResource::collection($this->resource['users']),
+        ];
     }
 }
