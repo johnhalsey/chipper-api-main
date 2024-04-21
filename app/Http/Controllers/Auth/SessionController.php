@@ -26,7 +26,7 @@ class SessionController extends Controller
         $user = $request->user();
         abort_if(!$user, 401, 'Unauthorized');
 
-        return (new UserResource($user))->additional([
+        return (new UserResource($user))->withEmail()->additional([
             'token' => $request->bearerToken(),
         ]);
     }

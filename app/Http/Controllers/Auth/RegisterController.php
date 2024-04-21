@@ -58,7 +58,7 @@ class RegisterController extends Controller
 
         $token = $user->createToken('web');
 
-        return (new UserResource($user))->additional([
+        return (new UserResource($user))->withEmail()->additional([
             'token' => $token->plainTextToken,
         ]);
     }

@@ -5,11 +5,12 @@ namespace Tests\Feature\Auth;
 use App\Models\User;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class AuthenticationTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     public function test_a_user_can_login_with_email_and_password(): void
     {

@@ -4,12 +4,13 @@ namespace Tests\Feature;
 
 use Illuminate\Support\Arr;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
 class PostTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     public function test_a_guest_can_not_create_a_post()
     {

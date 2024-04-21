@@ -7,11 +7,25 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
 {
+    protected $withEmail = false;
+
     public function toArray(Request $request): array
     {
-        return [
+        $data = [
             'id'    => $this->id,
             'name'  => $this->name,
         ];
+
+        if ($this->withEmail) {
+            $data['email'] = $this->email;
+        }
+
+        return $data;
+    }
+
+    public function withEmail()
+    {
+        $this->withEmail = true;
+        return $this;
     }
 }
