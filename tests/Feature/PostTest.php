@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use Illuminate\Support\Arr;
 use App\Models\User;
+use App\Events\PostCreated;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
@@ -25,6 +27,8 @@ class PostTest extends TestCase
     public function test_a_user_can_create_a_post()
     {
         $user = User::factory()->create();
+
+        Event::fake();
 
         $response = $this->actingAs($user)->postJson(route('posts.store'), [
             'title' => 'Test Post',
@@ -48,6 +52,8 @@ class PostTest extends TestCase
             'title' => 'Test Post',
             'body' => 'This is a test post.',
         ]);
+
+        Event::assertDispatched(PostCreated::class);
     }
 
     public function test_a_user_can_update_a_post()
