@@ -33,9 +33,9 @@ class NewPostCreatedNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->line('Hello ' . $notifiable->name)
+                    ->line('A new post has been created by ' . $this->user->name)
+                    ->action('Show me', url('/posts/' . $this->post->id));
     }
 
     /**
