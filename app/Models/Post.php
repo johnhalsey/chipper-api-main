@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use App\Contracts\CanBeFavorited;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Post extends Model
+class Post extends Model implements CanBeFavorited
 {
     use HasFactory, CanBeFavorite;
 

@@ -16,22 +16,14 @@ class PostFavoriteController extends Controller
 {
     public function store(CreateFavoriteRequest $request, Post $post)
     {
-        $request->user()->favorites()->create([
-            'favoriteable_id' => $post->id,
-            'favoriteable_type' => Post::class,
-        ]);
+        $request->user()->saveFavorite($post);
 
         return response()->noContent(Response::HTTP_CREATED);
     }
 
     public function destroy(Request $request, Post $post)
     {
-        $favourite = $request->user()->favorites()
-            ->where('favoriteable_id', $post->id)
-            ->where('favoriteable_type', Post::class)
-            ->firstOrFail();
-
-        $favourite->delete();
+        $request->user()->removeFavorite($post);
 
         return response()->noContent();
     }

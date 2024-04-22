@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use App\Contracts\CanBeFavorited;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class User extends Authenticatable
+class User extends Authenticatable implements CanBeFavorited
 {
     use HasApiTokens,
         HasFactory,
@@ -54,6 +55,24 @@ class User extends Authenticatable
     public function favorites(): HasMany
     {
         return $this->hasMany(Favorite::class);
+    }
+
+    public function saveFavorite(CanBeFavorited $model)
+    {
+        $this->favorites()->create([
+            'favoriteable_id' => $model->id,
+            'favoriteable_type' => get_class($model),
+        ]);
+    }
+
+    public function removeFavorite(CanBeFavorited $model)
+    {
+        $favorite = $this->favorites()
+            ->where('favoriteable_id', $model->id)
+            ->where('favoriteable_type', get_class($model))
+            ->firstOrFail();
+
+        $favorite->delete();
     }
 
 }

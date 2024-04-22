@@ -12,22 +12,14 @@ class UserFavoriteController extends Controller
 {
     public function store(CreateFavoriteRequest $request, User $user)
     {
-        $request->user()->favorites()->create([
-            'favoriteable_id' => $user->id,
-            'favoriteable_type' => User::class,
-        ]);
+        $request->user()->saveFavorite($user);
 
         return response()->noContent(Response::HTTP_CREATED);
     }
 
     public function destroy(Request $request, User $user)
     {
-        $favourite = $request->user()->favorites()
-            ->where('favoriteable_id', $user->id)
-            ->where('favoriteable_type', User::class)
-            ->firstOrFail();
-
-        $favourite->delete();
+        $request->user()->removeFavorite($user);
 
         return response()->noContent();
     }
